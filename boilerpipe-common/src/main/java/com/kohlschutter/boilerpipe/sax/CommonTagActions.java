@@ -20,6 +20,7 @@ package com.kohlschutter.boilerpipe.sax;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.kohlschutter.boilerpipe.document.Metadata;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -280,6 +281,37 @@ public abstract class CommonTagActions {
 
     public boolean changesTagLevel() {
       return false;
+    }
+  };
+
+  public static final TagAction TA_META_OG = new TagAction() {
+    @Override
+    public boolean start(BoilerpipeHTMLContentHandler instance, String localName, String qName, Attributes atts) throws SAXException {
+      String tag = atts.getValue("property");
+
+      // sometimes sites use 'name' instead of 'property' attribute in the meta element
+      if (tag == null || tag.trim().equals("")) {
+        tag = atts.getValue("name");
+      }
+
+      if (tag != null && Metadata.OpenGraph.isValidTag(tag)) {
+        String content = atts.getValue("content");
+        if (content != null) {
+          instance.getMetadata().getOpenGraph().setValue(tag, content);
+        }
+      }
+
+      return true;
+    }
+
+    @Override
+    public boolean end(BoilerpipeHTMLContentHandler instance, String localName, String qName) throws SAXException {
+      return true;
+    }
+
+    @Override
+    public boolean changesTagLevel() {
+      return true;
     }
   };
 

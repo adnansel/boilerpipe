@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.kohlschutter.boilerpipe.document.Metadata;
 import com.kohlschutter.boilerpipe.text.Text;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
@@ -91,6 +92,8 @@ public class BoilerpipeHTMLContentHandler implements ExtendedContentHandler {
   LinkedList<LinkedList<LabelAction>> labelStacks = new LinkedList<>();
 
   LinkedList<Integer> fontSizeStack = new LinkedList<>();
+
+  private Metadata metadata = new Metadata();
 
   /**
    * Recycles this instance.
@@ -322,6 +325,10 @@ public class BoilerpipeHTMLContentHandler implements ExtendedContentHandler {
     return textBlocks;
   }
 
+  public Metadata getMetadata() {
+    return metadata;
+  }
+
   public void flushBlock() {
 
     if (inBody == 0) {
@@ -461,7 +468,7 @@ public class BoilerpipeHTMLContentHandler implements ExtendedContentHandler {
     // just to be sure
     flushBlock();
 
-    return new TextDocument(getTitle(), getTextBlocks());
+    return new TextDocument(getTitle(), getTextBlocks(), getMetadata());
   }
 
   public void addWhitespaceIfNecessary() {

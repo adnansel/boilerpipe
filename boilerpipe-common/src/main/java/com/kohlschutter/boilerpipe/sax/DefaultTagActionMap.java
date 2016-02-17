@@ -77,5 +77,8 @@ public class DefaultTagActionMap extends TagActionMap {
         DefaultLabels.HEADING)));
     setTagAction("H3", new CommonTagActions.BlockTagLabelAction(new LabelAction(DefaultLabels.H3,
         DefaultLabels.HEADING)));
+
+    // New for OpenGraph metadata
+    setTagAction("META", CommonTagActions.TA_META_OG);
   }
 }

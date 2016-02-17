@@ -28,6 +28,7 @@ import java.util.List;
 public class TextDocument implements Cloneable {
   final List<TextBlock> textBlocks;
   String title;
+  Metadata metadata;
 
   /**
    * Creates a new {@link TextDocument} with given {@link TextBlock}s, and no title.
@@ -35,7 +36,7 @@ public class TextDocument implements Cloneable {
    * @param textBlocks The text blocks of this document.
    */
   public TextDocument(final List<TextBlock> textBlocks) {
-    this(null, textBlocks);
+    this(null, textBlocks, null);
   }
 
   /**
@@ -44,9 +45,10 @@ public class TextDocument implements Cloneable {
    * @param title The "main" title for this text document.
    * @param textBlocks The text blocks of this document.
    */
-  public TextDocument(final String title, final List<TextBlock> textBlocks) {
+  public TextDocument(final String title, final List<TextBlock> textBlocks, Metadata metadata) {
     this.title = title;
     this.textBlocks = textBlocks;
+    this.metadata = metadata;
   }
 
   /**
@@ -74,6 +76,14 @@ public class TextDocument implements Cloneable {
    */
   public void setTitle(final String title) {
     this.title = title;
+  }
+
+  /**
+   * Returns the metadata from the HEAD element
+   * @return the metadata
+     */
+  public Metadata getMetadata() {
+    return metadata;
   }
 
   /**
@@ -190,7 +200,9 @@ public class TextDocument implements Cloneable {
     for (TextBlock tb : textBlocks) {
       list.add(tb.clone());
     }
-    return new TextDocument(title, list);
+
+    // TODO add proper metadata cloning
+    return new TextDocument(title, list, metadata);
   }
 
   @Override
